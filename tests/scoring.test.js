@@ -80,7 +80,7 @@ test('returns rawRating when reviewCount is very large (high confidence)', () =>
   const result = bayesianAdjust(4.5, 100000, 4.0, 50);
   assertClose(result, 4.5, 0.01);
 });
-
+ 
 test('returns exact midpoint when reviewCount equals threshold (50% confidence)', () => {
   // confidence = 50 / (50 + 50) = 0.5
   // adjusted = (0.5 × 4.8) + (0.5 × 4.0) = 4.4
