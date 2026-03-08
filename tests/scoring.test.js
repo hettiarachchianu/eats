@@ -87,7 +87,7 @@ test('returns exact midpoint when reviewCount equals threshold (50% confidence)'
   const result = bayesianAdjust(4.8, 50, 4.0, 50);
   assertClose(result, 4.4);
 });
-
+ 
 test('pulls a low rating UP toward global average when reviews are few', () => {
   const raw = 2.0;
   const globalAvg = 4.0;
