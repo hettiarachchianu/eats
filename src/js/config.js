@@ -19,7 +19,7 @@ const CONFIG = {
   // Exposing this key here is the intended and documented usage for this plan.
   // Reference: https://tripadvisor-content-api.readme.io/reference/overview
   // If you upgrade to a paid plan, move this to a Netlify Environment Variable.
-  TRIPADVISOR_KEY:     "8B6B9989DE674995AA64406FBBC6BE45",
+  TRIPADVISOR_KEY:     "F14160335C66408F84259D8D3EB8D5E0",
   TRIPADVISOR_ENABLED: true,
 
   // ── Composite Score Formula Weights ──────────────────────
