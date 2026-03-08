@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Ella Eats — Rating System</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="logo">EE</div>
+    <div>
+      <div class="site-name">Ella Eats</div>
+      <div class="site-sub">Combined Venue Rating System — Ella, Sri Lanka</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="pills">
+      <div class="pill" id="gPill" data-s="loading">
+        <span class="pdot" id="gDot" data-s="loading"></span>
+        <span class="plabel">Google Maps</span>
+        <span class="ptext" id="gTxt">Connecting...</span>
+      </div>
+      <div class="pill" id="taPill" data-s="loading">
+        <span class="pdot" id="taDot" data-s="loading"></span>
+        <span class="plabel">TripAdvisor</span>
+        <span class="ptext" id="taTxt">Connecting...</span>
+      </div>
+    </div>
+    <div class="updated" id="updated"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- PANEL 1: RESEARCH METHODOLOGY -->
+<div class="panel">
+  <div class="ph" onclick="togglePanel('w')">
+    <div class="ph-l">
+      <span class="ptag">01</span>
+      <div>
+        <div class="ptitle">Composite Scoring Methodology</div>
+        <div class="psub">Weights derived from questionnaire survey data — not user adjustable</div>
+      </div>
+    </div>
+    <button class="togbtn" id="wBtn">-</button>
+  </div>
+  <div class="pb" id="wBody">
+
+    <!-- Weight display cards -->
+    <div class="sliders-row">
+      <div class="src-card">
+        <div class="src-card-top">
+          <div class="src-card-left">
+            <span class="src-name">Google Maps</span>
+            <span class="src-badge b-loading" id="gBadge">LOADING</span>
+          </div>
+          <span class="w-num" style="color:var(--blue)">60%</span>
+        </div>
+        <div class="weight-bar-wrap">
+          <div class="weight-bar-track">
+            <div class="weight-bar-fill" style="width:60%;background:var(--blue)"></div>
+          </div>
+        </div>
+        <div class="src-stats">
+          Avg Rating: <strong id="gAvg">—</strong>&nbsp;&nbsp;
+          Total Reviews: <strong id="gRev">—</strong>
+        </div>
+        <div class="w-justify">
+          <span class="wj-label">Survey Justification</span>
+          <span class="wj-text">Respondents rated Google Maps trust <strong>3.8/5</strong> vs TripAdvisor <strong>2.9/5</strong> — proportional weight applied</span>
+        </div>
+      </div>
+      <div class="src-card">
+        <div class="src-card-top">
+          <div class="src-card-left">
+            <span class="src-name">TripAdvisor</span>
+            <span class="src-badge b-loading" id="taBadge">LOADING</span>
+          </div>
+          <span class="w-num" style="color:var(--green)">40%</span>
+        </div>
+        <div class="weight-bar-wrap">
+          <div class="weight-bar-track">
+            <div class="weight-bar-fill" style="width:40%;background:var(--green)"></div>
+          </div>
+        </div>
+        <div class="src-stats">
+          Avg Rating: <strong id="taAvg">—</strong>&nbsp;&nbsp;
+          Total Reviews: <strong id="taRev">—</strong>&nbsp;&nbsp;
+          <span id="taAvgNote" style="color:var(--t3);font-size:11px">Not connected</span>
+        </div>
+        <div class="w-justify">
+          <span class="wj-label">Survey Justification</span>
+          <span class="wj-text">Lower weight reflects fewer Sri Lanka reviews &amp; lower respondent trust score relative to Google Maps</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance bar -->
+    <div class="bal-row">
+      <span class="bal-lbl" style="color:var(--blue)">Google 60%</span>
+      <div class="bal-bar">
+        <div class="bal-g" style="width:60%"></div>
+        <div class="bal-t" style="width:40%"></div>
+      </div>
+      <span class="bal-lbl" style="color:var(--green)">TripAdvisor 40%</span>
+    </div>
+
+    <!-- Formula -->
+    <div class="formula-row">
+      <span class="formula-lbl">Formula</span>
+      <code class="formula-txt" id="formulaTxt">Score = (Google_Adjusted × 0.60) + (TA_Adjusted × 0.40)  [/10]</code>
+    </div>
+
+    <!-- Bayesian note -->
+    <div class="method-note">
+      <span class="mn-icon">ℹ</span>
+      <span>Ratings are <strong>Bayesian-adjusted</strong> by review count before weighting. Low review counts are pulled toward the venue average, preventing unreliable ratings from distorting the composite score. This addresses the disparity in review volumes between platforms in the Sri Lankan context.</span>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- SEARCH AND FILTER (flat, no toggle) -->
+<div class="panel-flat">
+  <div class="sf-grid">
+    <div>
+      <label class="flbl">Search Venues</label>
+      <div class="sbox">
+        <span class="sico">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <input type="text" class="sinp" id="sInp" placeholder="Name, type, cuisine..." oninput="onSearch()"/>
+        <button class="sclear" id="sClear" onclick="clearSearch()" style="display:none">x</button>
+      </div>
+    </div>
+    <div>
+      <label class="flbl">Min Combined Score — <span id="minVal">Any</span></label>
+      <div class="sl-wrap" style="margin-top:8px">
+        <input type="range" class="sl-min" id="minSl" min="0" max="10" value="0" step="0.5" oninput="onMinScore()"/>
+        <div class="sl-track"><div class="sl-fill fill-min" id="minFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fs-row">
+    <div class="fg">
+      <label class="flbl">Venue Type</label>
+      <div class="pill-row">
+        <button class="fpill on" data-f="all"        onclick="setTypeFilter(this,'all')">All</button>
+        <button class="fpill"    data-f="restaurant" onclick="setTypeFilter(this,'restaurant')">Restaurant</button>
+        <button class="fpill"    data-f="cafe"        onclick="setTypeFilter(this,'cafe')">Cafe</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Sort By</label>
+      <div class="pill-row">
+        <button class="fpill on" data-s2="combined" onclick="setSortMethod(this,'combined')">Combined Score</button>
+        <button class="fpill"    data-s2="google"   onclick="setSortMethod(this,'google')">Google</button>
+        <button class="fpill"    data-s2="trip"     onclick="setSortMethod(this,'trip')">TripAdvisor</button>
+        <button class="fpill"    data-s2="reviews"  onclick="setSortMethod(this,'reviews')">Reviews</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fs-row">
+    <div class="fg">
+      <label class="flbl">Price Range</label>
+      <div class="pill-row">
+        <button class="fpill on" data-price="all"                    onclick="setPriceFilter(this,'all')">All</button>
+        <button class="fpill"    data-price="PRICE_LEVEL_INEXPENSIVE" onclick="setPriceFilter(this,'PRICE_LEVEL_INEXPENSIVE')">$ Budget</button>
+        <button class="fpill"    data-price="PRICE_LEVEL_MODERATE"    onclick="setPriceFilter(this,'PRICE_LEVEL_MODERATE')">$$ Moderate</button>
+        <button class="fpill"    data-price="PRICE_LEVEL_EXPENSIVE"   onclick="setPriceFilter(this,'PRICE_LEVEL_EXPENSIVE')">$$$ Expensive</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Cuisine</label>
+      <div class="pill-row" id="cuisineFilters">
+        <button class="fpill on" data-cuisine="all" onclick="setCuisineFilter(this,'all')">All</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="af" id="af" style="display:none">
+    <span class="af-lbl">Active filters:</span>
+    <div id="afTags"></div>
+    <button class="clearbtn" onclick="clearAllFilters()">Clear all</button>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="sum-row" id="sumRow" style="display:none">
+  <div class="sum-card"><div class="sum-lbl">Top Rated</div><div class="sum-val" id="sTop">—</div></div>
+  <div class="sum-card"><div class="sum-lbl">Avg Combined Score</div><div class="sum-val" id="sAvg">—</div></div>
+  <div class="sum-card"><div class="sum-lbl">Total Reviews</div><div class="sum-val" id="sRev">—</div></div>
+  <div class="sum-card"><div class="sum-lbl">Venues Showing</div><div class="sum-val" id="sShow">—</div></div>
+</div>
+
+<!-- LOADING -->
+<div id="loadSec">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div class="loading-ttl">Fetching live data from Google Maps API</div>
+    <div class="loading-sub">Calling Netlify serverless function — no browser restrictions</div>
+  </div>
+</div>
+
+<!-- ERROR -->
+<div id="errSec" style="display:none">
+  <div class="err-box">
+    <div class="err-code">CONFIG ERROR</div>
+    <div class="err-ttl">Google API Key Not Configured</div>
+    <p class="err-desc">The app needs your Google API key in Netlify Environment Variables:</p>
+    <div class="err-steps">
+      <div class="err-step"><span class="sn">1</span>Netlify — Site Configuration — Environment Variables — add <code>GOOGLE_API_KEY</code></div>
+      <div class="err-step"><span class="sn">2</span>Also add <code>TA_API_KEY</code> for TripAdvisor data</div>
+      <div class="err-step"><span class="sn">3</span>Commit to GitHub — Netlify redeploys automatically</div>
+      <div class="err-step"><span class="sn">4</span>Make sure <strong>Places API (New)</strong> is enabled in Google Cloud Console</div>
+    </div>
+  </div>
+</div>
+
+<!-- NO RESULTS -->
+<div id="noRes" style="display:none">
+  <div class="no-results-box">
+    <div class="nr-ttl">No venues match your current filters</div>
+    <button class="sec-btn" onclick="clearAllFilters()">Clear Filters</button>
+  </div>
+</div>
+
+<!-- VENUES -->
+<div id="venSec" style="display:none">
+  <div class="vgrid" id="vGrid"></div>
+  <div class="ta-note" id="taNoteBar">
+    TripAdvisor is not connected. Add <code>TA_API_KEY</code> to Netlify Environment Variables to load live TripAdvisor ratings.
+  </div>
+</div>
+
+</main>
+<footer>Ella Eats Rating System &mdash; Google Maps Places API (New) &mdash; TripAdvisor Content API &mdash; Ella, Sri Lanka</footer>
+</div>
+
+<!--
+  Scripts loaded in dependency order:
+  1. config.js   — CONFIG constant (venues, weights, settings)
+  2. scoring.js  — Bayesian scoring algorithm (pure functions)
+  3. api.js      — External API fetch functions
+  4. filters.js  — Filter, search, and sort logic
+  5. ui.js       — DOM rendering and card generation
+  6. main.js     — Entry point: AppState + init()
+-->
+<script src="js/config.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/api.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

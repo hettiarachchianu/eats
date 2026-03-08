@@ -1,0 +1,13 @@
+{
+  "name": "ella-eats",
+  "version": "1.0.0",
+  "description": "Combined venue rating system for Ella, Sri Lanka — BSc Computing research project",
+  "scripts": {
+    "test": "node tests/scoring.test.js && node tests/filters.test.js",
+    "test:scoring": "node tests/scoring.test.js",
+    "test:filters": "node tests/filters.test.js",
+    "dev": "netlify dev"
+  },
+  "author": "",
+  "license": "ISC"
+}

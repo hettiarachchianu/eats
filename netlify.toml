@@ -1,0 +1,23 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/google-place"
+  to = "/.netlify/functions/google-place"
+  status = 200
+
+[[redirects]]
+  from = "/api/google-place-photo"
+  to = "/.netlify/functions/google-place-photo"
+  status = 200
+
+[[redirects]]
+  from = "/api/tripadvisor"
+  to = "/.netlify/functions/tripadvisor"
+  status = 200
+
+[[redirects]]
+  from = "/api/debug"
+  to = "/.netlify/functions/debug"
+  status = 200
